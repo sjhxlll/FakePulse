@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PPG 脉搏模拟器</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    #pulse {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background-color: green;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+      margin-bottom: 40px;
+      transition: background-color 0.05s, box-shadow 0.05s;
+    }
+
+    #controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type=range] {
+      width: 300px;
+    }
+
+    .label {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="pulse"></div>
+
+  <div id="controls">
+    <div class="label">心率：<span id="bpmLabel">60</span> 次/分钟</div>
+    <input type="range" id="bpmSlider" min="40" max="180" value="60">
+  </div>
+
+  <script>
+    const pulse = document.getElementById("pulse");
+    const bpmSlider = document.getElementById("bpmSlider");
+    const bpmLabel = document.getElementById("bpmLabel");
+
+    let bpm = parseInt(bpmSlider.value);
+    bpmSlider.addEventListener('input', () => {
+      bpm = parseInt(bpmSlider.value);
+      bpmLabel.textContent = bpm;
+    });
+
+    let t = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const delta = (currentTime - lastTime) / 1000; // seconds
+      lastTime = currentTime;
+
+      const frequency = bpm / 60;
+      const omega = 2 * Math.PI * frequency;
+
+      t += delta;
+
+      const intensity = 0.5 + 0.5 * Math.sin(t * omega);
+      const color = `rgba(0,255,0,${intensity})`;
+      const glow = `0 0 30px rgba(0,255,0,${intensity * 0.8})`;
+
+      pulse.style.backgroundColor = color;
+      pulse.style.boxShadow = glow;
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
