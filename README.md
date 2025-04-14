@@ -1,33 +1,43 @@
-# PPG 可视化模拟器
+# PPG 可视化模拟器 | PPG Visual Simulator
 
-> 一个基于屏幕的假脉搏模拟器，可用于测试智能手环等可穿戴设备的光学心率传感器。
-
----
-
-## 📌 项目简介
-
-本项目通过模拟人类手腕的血液流动节律，在屏幕上以绿色光点的亮度变化来还原 PPG（光电容积脉搏波图）信号。将智能手环贴近屏幕，即可触发设备的心率检测功能，适用于设备开发、算法调试、教学演示等场景。
+> 一个基于屏幕的假脉搏模拟器，可用于测试智能手环等可穿戴设备的光学心率传感器  
+> A screen-based fake pulse generator for testing optical heart rate sensors in smart bands and wearables.
 
 ---
 
-## 🧠 原理说明
+## 📌 项目简介 | Overview
 
-多数智能手环通过绿色 LED 灯照射皮肤，并根据反射光强变化计算出心率。本项目模拟了这个过程，通过屏幕显示周期性变化的绿色光源，骗过设备识别为“血液脉动”。
+本项目通过模拟人类手腕的血液流动节律，在屏幕上以绿色光点的亮度变化来还原 PPG（光电容积脉搏波图）信号。将智能手环贴近屏幕，即可触发设备的心率检测功能。
 
----
-
-## 🎮 功能特点
-
-- 💡 模拟真实 PPG 信号波动（正弦近似）
-- 🎚 实时调节心率频率（40～180 bpm）
-- 🌑 高对比度设计，增强设备识别准确性
-- 📱 可在手机或电脑浏览器中直接运行
+This project simulates human blood flow rhythm visually using green brightness pulses on screen, mimicking PPG (photoplethysmography) signals. When a wearable device is placed against the screen, it can trigger heart rate detection.
 
 ---
 
-## 🖥 使用方法
+## 🧠 原理说明 | How It Works
 
-1. 下载或克隆本项目；
-2. 使用浏览器打开 `ppg_simulator.html`；
-3. 将手环光电传感器区域贴近绿色圆形区域；
-4. 调节滑块观察不同心率下的识别情况。
+大多数智能手环使用绿色 LED 照射皮肤，并通过反射光强的周期变化计算心率。本项目通过屏幕模拟周期性绿光脉动，达到测试目的。
+
+Most wrist-worn heart rate monitors use green LEDs and measure reflected light intensity to detect heartbeats. This tool emulates the periodic green light pulses using a screen display.
+
+---
+
+## 🎮 功能特点 | Features
+
+- 💡 模拟近似真实 PPG 波动 | Simulates PPG-like signal (sine wave)
+- 🎚 可调节心率频率（40～180 bpm）| Adjustable heart rate frequency (40–180 bpm)
+- 🌑 黑底高对比，增强识别 | High contrast green-on-black for sensor clarity
+- 📱 浏览器即可运行 | Runs directly in any modern browser
+
+---
+
+## 🖥 使用方法 | How to Use
+
+1. 下载或克隆本项目 | Clone or download this repo
+2. 使用浏览器打开 `ppg_simulator.html` | Open `ppg_simulator.html` in a browser
+3. 将手环光电区域贴近绿色圆形区域 | Place the heart rate sensor of the device on the green circle
+4. 调节滑块观察识别变化 | Adjust the slider to test different heart rate values
+
+---
+
+## 📦 文件结构 | File Structure
+
