@@ -37,7 +37,3 @@ Most wrist-worn heart rate monitors use green LEDs and measure reflected light i
 3. 将手环光电区域贴近绿色圆形区域 | Place the heart rate sensor of the device on the green circle
 4. 调节滑块观察识别变化 | Adjust the slider to test different heart rate values
 
----
-
-## 📦 文件结构 | File Structure
-
