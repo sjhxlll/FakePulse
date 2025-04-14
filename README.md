@@ -42,7 +42,7 @@ Most wrist-worn heart rate monitors use green LEDs and measure reflected light i
 ## 帮助 | help
 
 - 1.心率检测和手环体质有关系。实测三个手环，其中有两个任何地方都可以检测到，但是另一个哪里都检测不到。
--
+-2.亮度也有影响
 
 
 
