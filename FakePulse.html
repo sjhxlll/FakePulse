@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PPG 脉搏模拟器</title>
+  <meta charset="UTF-8" />
+  <title>PPG 心率模拟器（运动模式）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -12,33 +13,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      font-family: sans-serif;
       height: 100vh;
       margin: 0;
-      font-family: sans-serif;
+      overflow: hidden;
     }
-
     #pulse {
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       border-radius: 50%;
       background-color: green;
       box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
-      margin-bottom: 40px;
-      transition: background-color 0.05s, box-shadow 0.05s;
+      margin-bottom: 20px;
     }
-
     #controls {
       display: flex;
       flex-direction: column;
       align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-
     input[type=range] {
-      width: 300px;
+      width: 280px;
     }
-
-    .label {
-      margin-bottom: 10px;
+    canvas {
+      background: #111;
+      border: 1px solid #333;
     }
   </style>
 </head>
@@ -46,39 +46,72 @@
   <div id="pulse"></div>
 
   <div id="controls">
-    <div class="label">心率：<span id="bpmLabel">60</span> 次/分钟</div>
-    <input type="range" id="bpmSlider" min="40" max="180" value="60">
+    <label>目标心率范围：<span id="hrDisplay">100 - 140</span> bpm</label>
+    <input type="range" id="minHR" min="40" max="160" value="100" />
+    <input type="range" id="maxHR" min="60" max="200" value="140" />
   </div>
+
+  <canvas id="waveform" width="400" height="100"></canvas>
 
   <script>
     const pulse = document.getElementById("pulse");
-    const bpmSlider = document.getElementById("bpmSlider");
-    const bpmLabel = document.getElementById("bpmLabel");
-
-    let bpm = parseInt(bpmSlider.value);
-    bpmSlider.addEventListener('input', () => {
-      bpm = parseInt(bpmSlider.value);
-      bpmLabel.textContent = bpm;
-    });
+    const minHR = document.getElementById("minHR");
+    const maxHR = document.getElementById("maxHR");
+    const hrDisplay = document.getElementById("hrDisplay");
+    const canvas = document.getElementById("waveform");
+    const ctx = canvas.getContext("2d");
 
     let t = 0;
     let lastTime = performance.now();
+    let bpm = 120;
+    let intensity = 0;
+    let history = [];
+
+    function updateHR() {
+      const min = parseInt(minHR.value);
+      const max = parseInt(maxHR.value);
+      if (min >= max) maxHR.value = min + 5;
+      bpm = min + Math.random() * (max - min);
+      hrDisplay.textContent = minHR.value + " - " + maxHR.value;
+    }
+
+    setInterval(updateHR, 3000); // 每3秒随机改变心率
+    updateHR();
+
+    function beatShape(x) {
+      const width = 0.2; // 跳动宽度（秒）
+      return Math.exp(-Math.pow(x / width, 2)); // 尖锐跳动
+    }
 
     function animate(currentTime) {
-      const delta = (currentTime - lastTime) / 1000; // seconds
+      const delta = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
-
-      const frequency = bpm / 60;
-      const omega = 2 * Math.PI * frequency;
-
       t += delta;
 
-      const intensity = 0.5 + 0.5 * Math.sin(t * omega);
-      const color = `rgba(0,255,0,${intensity})`;
-      const glow = `0 0 30px rgba(0,255,0,${intensity * 0.8})`;
+      const interval = 60 / bpm;
+      const phase = t % interval;
+      intensity = beatShape(phase - interval / 2);
 
-      pulse.style.backgroundColor = color;
-      pulse.style.boxShadow = glow;
+      // 更新绿色圆圈亮度
+      pulse.style.backgroundColor = `rgba(0,255,0,${intensity})`;
+      pulse.style.boxShadow = `0 0 30px rgba(0,255,0,${intensity * 0.8})`;
+
+      // 波形数据更新
+      history.push(intensity);
+      if (history.length > 600) history.shift(); // 保持 10 秒（60fps）
+
+      // 绘制波形
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      for (let i = 0; i < history.length; i++) {
+        const x = (i / 600) * canvas.width;
+        const y = canvas.height - history[i] * canvas.height;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = "lime";
+      ctx.lineWidth = 2;
+      ctx.stroke();
 
       requestAnimationFrame(animate);
     }
