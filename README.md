@@ -2,7 +2,7 @@
 
 > 一个基于屏幕的假脉搏模拟器，可用于测试智能手环等可穿戴设备的光学心率传感器  
 > A screen-based fake pulse generator for testing optical heart rate sensors in smart bands and wearables.
-# [demo](https://mb.050519.xyz)
+# [demo](https://fake-pulse.vercel.app)
 ---
 
 ## 📌 项目简介 | Overview
